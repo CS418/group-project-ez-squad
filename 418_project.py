@@ -22,12 +22,14 @@ countries = ['United States', 'Canada', 'Mexico']
 https://ourworldindata.org/fish-and-overfishing#global-fish-production
 
 **Wild Caught Data**
+
+**Aquaculture (farmed) Fish Data**
 """
 
 # total wild caught fish by country (does not include farmed fish)
 url = 'https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-10-12/capture-fishery-production.csv'
 wild_caught_df = pd.read_csv(url)
-print('Wild Caught Data size:', wild_caught_df.shape)
+# print('Wild Caught Data size:', wild_caught_df.shape)
 
 # drop non-essential columns 
 wild_caught_df = wild_caught_df.drop(['Code'], axis=1)
@@ -57,6 +59,8 @@ plt.plot(canada_wild_data['Year'], canada_wild_data['Capture fisheries productio
 # plot North America wild caught data 
 plt.plot(wild_grouped_NA.index, wild_grouped_NA.values, label= 'NA Total')
 
+print('Author: Sean Carrigan')
+
 # plot details and display 
 plt.xlabel('Year')
 plt.ylabel('Capture fisheries production (metric tons)')
@@ -65,7 +69,37 @@ plt.ticklabel_format(style='plain', axis='y')
 plt.legend()
 plt.show()
 
-"""**Aquaculture (farmed) Fish Data**"""
+"""^ This graph shows, in metric tons, totals for wild caught fish of the coasts of various locations. Here we can see that that beginning around 1975 North American wild caught production significantly increases. While there is a steep rise in production during this time in Mexico, the main source of this growth comes from the US. The trend line for NA follows the pattern for the US. Canada's wild production has decreased overtime. Mexico production spiked in the late 1970's and has remained at a similar level since. """
+
+# display US consumption bar chart
+plt.bar(us_wild_data['Year'], us_wild_data['Capture fisheries production (metric tons)'], color='blue')
+plt.xlabel("Year")
+plt.ylabel("Wild Production (metric tons)")
+plt.title("US Wild Production by Year")
+plt.show()
+
+# display Mexico consumption bar chart
+plt.bar(mexico_wild_data['Year'], mexico_wild_data['Capture fisheries production (metric tons)'], color='orange')
+plt.xlabel("Year")
+plt.ylabel("Wild Production (metric tons)")
+plt.title("Mexico Wild Production by Year")
+plt.show()
+
+# display Canada consumption bar chart
+plt.bar(canada_wild_data['Year'], canada_wild_data['Capture fisheries production (metric tons)'], color='green')
+plt.xlabel("Year")
+plt.ylabel("Wild Production (metric tons)")
+plt.title("Canada Wild Production by Year")
+plt.show()
+
+# plot North America wild caught data 
+plt.bar(wild_grouped_NA.index, wild_grouped_NA.values, label= 'NA Total', color='red')
+plt.xlabel("Year")
+plt.ylabel("Wild Production (metric tons)")
+plt.title("North America Wild Production by Year")
+plt.show()
+
+"""^ Similar to the line graphs above, these bar charts show consumption trends for each individual contry in bar chart form. """
 
 # total farmed fish by country (does not include wild caught fish)
 url = 'https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-10-12/aquaculture-farmed-fish-production.csv'
@@ -99,6 +133,8 @@ plt.plot(canada_farmed_data['Year'], canada_farmed_data['Aquaculture production 
 # plot North America farmed data 
 plt.plot(farmed_grouped_NA.index, farmed_grouped_NA.values, label= 'NA Total')
 
+print('Author: Sean Carrigan')
+
 # plot details and display 
 plt.xlabel('Year')
 plt.ylabel('Aquaculture production (metric tons)')
@@ -107,13 +143,18 @@ plt.ticklabel_format(style='plain', axis='y')
 plt.legend()
 plt.show()
 
-"""**Wild Caught vs. Farmed Production**"""
+"""^ This graph shows, in metric tons, totals for wild caught fish
+
+**Wild Caught vs. Farmed Production**
+"""
 
 # plot North America wild caught data 
 plt.plot(wild_grouped_NA.index, wild_grouped_NA.values, label= 'Wild Caught')
 
 # plot North America farmed data
 plt.plot(farmed_grouped_NA.index, farmed_grouped_NA.values, label= 'Farmed')
+
+print('Author: Sean Carrigan')
 
 # plot details and display 
 plt.xlabel('Year')
@@ -123,7 +164,10 @@ plt.ticklabel_format(style='plain', axis='y')
 plt.legend()
 plt.show()
 
-"""**Fish and Seafood Consumption**"""
+"""**Fish and Seafood Consumption**
+
+^ This graph shows the overall production data for farmed vs. wild fish and seafood produciton. As we can see, farmed production has slightly increased over time. While wild production has dramatically increased.
+"""
 
 url = 'https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-10-12/fish-and-seafood-consumption-per-capita.csv'
 consumption_df = pd.read_csv(url)
@@ -161,6 +205,8 @@ plt.plot(canada_data['Year'], canada_data['Consumption (kg/capita/yr)'], label='
 print('Size of NA data:', grouped_NA.shape)
 plt.plot(grouped_NA.index, grouped_NA.values, label= 'NA Total')
 
+print('Author: Sean Carrigan')
+
 # plot details and display
 plt.xlabel('Year')
 plt.xlim(1960, 2020)
@@ -168,3 +214,7 @@ plt.ylabel('Consumption (kg/capita/yr)')
 plt.title('North America Fish and Seafood Consumption Data')
 plt.legend()
 plt.show()
+
+"""^ This graph shows the trends of overall fish and seafood consumption for North Americans from 1960-2018. The data is saparated by country along with the aggregate consumption data for NA all together. It is interesting to note here how the overall NA trend follows a similar pattern to that of Mexico. """
+
+# print(wild_caught_df['Year'].min(), wild_caught_df['Year'].max())
