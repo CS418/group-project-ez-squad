@@ -146,3 +146,5 @@ ax.set_xlabel('Year')
 ax.set_ylabel('Mean Bleaching Level')
 ax.set_title('Yearly Increase in Coral Bleaching Level by Ocean')
 plt.show()
+
+print(df.shape)
