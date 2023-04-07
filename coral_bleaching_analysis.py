@@ -63,8 +63,10 @@ def print_stats(dbConn):
 
 # sql connection to db and get data that is not reef check
 dbConn = sqlite3.connect('Global_Coral_Bleaching.db')
+# majority of the data is cleaned and retreived from the db by the print_stats function as specific queries are used for each data source and cleaning
 reef_data, other_data = print_stats(dbConn)
-# dbConn.close()
+# close the db connection after getting the data
+dbConn.close()
 
 df = pd.DataFrame(reef_data, columns=['Ocean', 'Country', 'Year', 'S1', 'S2', 'S3', 'S4', 'Data_Source'])
 print ("Reef Check:", df.shape)
@@ -73,14 +75,16 @@ print ("Reef Check:", df.shape)
 df2 = pd.DataFrame(other_data, columns=['Ocean', 'Country', 'Year', 'Data_Source', 'Percent_Bleached'])
 print ("Other Sources:", df2.shape)
 
-#  min and max years in df
-min_year = df['Year'].min()
-max_year = df['Year'].max()
-print("Min Year:", min_year)
-print("Max Year:", max_year)
+#  min and max years in df and df2
+print("Reef Check Data: ")
+print("Min Year:", df['Year'].min())
+print("Max Year:", df['Year'].max())
+print("Other Sources Data: ")
+print("Min Year:", df2['Year'].min())
+print("Max Year:", df2['Year'].max())
 
 
-# lets check if there are any null values and if so lets drop them
+# lets check if there are any null values and if so lets drop them, although majority of the data is cleaned in the queries by the use of IS NOT NULL
 if df.isnull().values.any():
     print("Reef Check Null Values:", df.isnull().sum())
     df = df.dropna()
@@ -126,7 +130,9 @@ print("Min Year:", min_year)
 print("Max Year:", max_year)
 
 
-# group data by year and ocean and calculate the mean bleaching level
+# grouped by year and ocean and the mean of the percent bleached column is calculated for each group
+# this allows to plot the yearly increase in coral bleaching level by ocean and shows how 
+# bleaching levels vary over time across the oceans.
 grouped = df.groupby(['Year', 'Ocean'])['Percent_Bleached'].mean()
 
 # create a pivot table with years as the index and oceans as the columns
