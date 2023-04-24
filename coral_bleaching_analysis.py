@@ -30,6 +30,41 @@ def print_stats(dbConn):
     hell = sql_get ( dbCursor, "SELECT COUNT(*) FROM Bleaching_tbl;")
     print("Total Rows:", hell)
 
+    # findings from the data
+
+    # Kumagai data has severity code 0,1,2,3
+    #   (-1, '% unknown', 'T'), (0, 'No Bleaching', 'T'), (1, 'Mild (1-10% Bleached)', 'T'), (2, 'Moderate (11-50% Bleached)', 'T'), (3, 'Severe (>50% Bleached)', 'T') from severity_code_LUT
+    # Donner data has severity code -1,0,1,2,3 and percent_bleached (some of them are None)
+    #   (-1, '% unknown', 'T'), (0, 'No Bleaching', 'T'), (1, 'Mild (1-10% Bleached)', 'T'), (2, 'Moderate (11-50% Bleached)', 'T'), (3, 'Severe (>50% Bleached)', 'T') from severity_code_LUT
+
+    # Reef_Check data has S1,S2,S3,S4, we can find averages of them 
+
+    # AGRRA data has percent_bleached
+
+    # FRRP data has percent_bleached - Atlantic Ocean data
+    # .csv has Bleaching levels
+    #   P = Pale (Tissue color is lighter than normal)
+    #   PB = Partially Bleached (Portions of the coral have a complete loss of color)
+    #   (BL) = Bleached (100% of coral tissue has lost its color and appears white)
+
+    # McClanahan data has percent_bleached, Number__Bleached_Colonies, bleach_intensity 
+
+    # Safaie data has Bleaching_Prevalence_Score_LUT
+    #       ([(0, 'No Bleaching', 'T'), (1, '<= 10% Reef Area Bleached', 'T'), (2, '10-25% Reef Area Bleached', 'T'), (3, '25-50% Reef Area Bleached', 'T'), (4, '>50% Reef Area Bleached', 'T')])
+
+    # all the data can be tied by 
+    #   *donner needs to drop -1 values
+    #   0 - no bleaching
+    #   1 - mild 1-10%
+    #   2 - moderate 11-50%
+    #   3 - severe >50%
+
+    #  Reef_check should be averaged and classified as above
+    #  *AGRRA - percent_bleached should be classified as above
+    #  *FRRP should be classified as above. use the .csv file if you want 2005-2022 data. "Bleaching" column and is part of the Atlantic Ocean since florida collected the data?
+    #  *McClanahan - percent_bleached should be classified as above
+    #  Safaie - Bleaching_Prevalence_Score_LUT should be classified as above
+
     # get the reef check data from the db specially the S1,S2,S3,S4, ocean, country, year and data source
     reef_check = sql_get ( dbCursor, "SELECT Ocean_Name_LUT.Ocean_Name, Country_Name_LUT.Country_Name, Date_Year, (S1), (S2), (S3), (S4), Data_Source_LUT.Data_Source \
                                     FROM Data_Source_LUT\
@@ -146,5 +181,3 @@ ax.set_xlabel('Year')
 ax.set_ylabel('Mean Bleaching Level')
 ax.set_title('Yearly Increase in Coral Bleaching Level by Ocean')
 plt.show()
-
-print(df.shape)
